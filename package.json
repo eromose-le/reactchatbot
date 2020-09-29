@@ -11,7 +11,7 @@
   "scripts": {
     "start": "node index.js",
     "deploy": "git add . && git commit -m 'changes' && git push",
-    "heroku": "git add . && git status && git commit -am 'bazzcode-api' && git push heroku master"
+    "heroku": "git add . && git status && git commit -am 'bazzcode-api' && git push -f heroku master"
   },
   "dependencies": {
     "actions-on-google": "^2.2.0",
