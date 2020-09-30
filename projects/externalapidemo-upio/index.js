@@ -12,7 +12,14 @@ module.exports = (request, response) => {
  }
 
  function rhymingWordHandler(agent) {
-  agent.add('intent called');
+  const word = agent.parameters.word;
+  agent.add(`Here are the rhyming words for ${word}`);
+  return axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`)
+   .then((result) => {
+    result.data.map(wordObj => {
+     agent.add(wordObj.word);
+    });
+   });
  }
 
  let intentMap = new Map();
