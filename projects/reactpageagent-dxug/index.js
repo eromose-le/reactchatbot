@@ -26,19 +26,12 @@ module.exports = (request, response) => {
   //     });
   // }
 
-  function rhymingWordHandler(agent) {
+  function async rhymingWordHandler(agent) {
     const word = agent.parameters.word;
     agent.add(`Here are the rhyming words for ${word}`);
-    axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`)
-      .then((result) => {
-        console.log(result.data);
-        result.data.map(wordObj => {
-          console.log(wordObj.word);
-          return agent.add(JSON.stringify(wordObj.word));
-          // agent.end(`${wordObj.word}`);
-        });
-      });
-    // agent.add('intent called: ' + word);
+    const result = await axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`)
+
+    console.log(result)
   }
 
   let intentMap = new Map();

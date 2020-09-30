@@ -25,3 +25,20 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Listening at http://localhost:${PORT}`)
 })
+
+________________________________________________________________________________________________________________
+WORKING
+________________________________________________________________________________________________________________
+  function rhymingWordHandler(agent) {
+    const word = agent.parameters.word;
+    agent.add(`Here are the rhyming words for ${word}`);
+    axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`)
+      .then((result) => {
+        console.log(result.data);
+        result.data.map(wordObj => {
+          console.log(wordObj.word);
+          return agent.add(JSON.stringify(wordObj.word));
+          // agent.end(`${wordObj.word}`);
+        });
+      });
+    /
