@@ -34,7 +34,8 @@ module.exports = (request, response) => {
         console.log(result.data);
         result.data.map(wordObj => {
           console.log(wordObj.word);
-          agent.end(`${wordObj.word}`);
+          agent.add(Json.stringify(wordObj.word));
+          // agent.end(`${wordObj.word}`);
         });
       });
     // agent.add('intent called: ' + word);
