@@ -9,7 +9,7 @@ app.get("/", (req, res) => {
     res.send({ hello: "Aus TI NE" });
 });
 
-app.post('/dialogflow-fulfillment', asyncHandler(async (request, response) => {
+app.post('/dialogflow-fulfillment', asyncHandler(async (request, response, next) => {
     try {
         let project = await request.body.session.split("/")[1];
         console.log(project);
@@ -17,9 +17,9 @@ app.post('/dialogflow-fulfillment', asyncHandler(async (request, response) => {
         functionToCall(request, response)
     }
     catch (error) {
-        console.log(error);
+        next(error);
     }
-}))
+}));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
