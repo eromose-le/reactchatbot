@@ -26,22 +26,25 @@ module.exports = (request, response) => {
   //     });
   // }
 
-  async function rhymingWordHandler(agent) {
+  function rhymingWordHandler(agent) {
     const word = agent.parameters.word;
     agent.add(`Here are the rhyming words for ${word}`);
-    const result = await axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`);
-    console.log(result);
-    result.data.map(wordObj => {
-      console.log(wordObj.word);
-      agent.add(wordObj.word)
-    });
-  }
+    axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`)
+      .then((result) => {
+        console.log(result.data);
+        result.data.map(wordObj => {
+          console.log(wordObj.word);
+          agent.add(JSON.stringify(wordObj.word));
+          return;
+          // agent.end(`${wordObj.word}`);
+        });
+      });
 
-  let intentMap = new Map();
-  intentMap.set('Default Welcome Intent', welcome);
-  intentMap.set('rhymingWord', rhymingWordHandler);
-  agent.handleRequest(intentMap);
-}
+    let intentMap = new Map();
+    intentMap.set('Default Welcome Intent', welcome);
+    intentMap.set('rhymingWord', rhymingWordHandler);
+    agent.handleRequest(intentMap);
+  }
 //  .catch (err) {
 //  next(err);
 // };

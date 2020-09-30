@@ -41,4 +41,17 @@ ________________________________________________________________________________
           // agent.end(`${wordObj.word}`);
         });
       });
-    /
+
+________________________________________________________________________________________________________________
+async notWORKING
+________________________________________________________________________________________________________________
+async function rhymingWordHandler(agent) {
+    const word = agent.parameters.word;
+    agent.add(`Here are the rhyming words for ${word}`);
+    const result = await axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`);
+    console.log(result);
+    result.data.map(wordObj => {
+      console.log(wordObj.word);
+      agent.add(wordObj.word);
+    });
+  }
