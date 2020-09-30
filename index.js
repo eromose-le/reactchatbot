@@ -10,10 +10,15 @@ app.get("/", (req, res) => {
 });
 
 app.post('/dialogflow-fulfillment', asyncHandler(async (request, response) => {
-    let project = await request.body.session.split("/")[1];
-    console.log(project);
-    const functionToCall = require(`./projects/${project}`)
-    functionToCall(request, response)
+    try {
+        let project = await request.body.session.split("/")[1];
+        console.log(project);
+        const functionToCall = require(`./projects/${project}`)
+        functionToCall(request, response)
+    }
+    catch (error) {
+        console.log(error);
+    }
 }))
 
 const PORT = process.env.PORT || 3000;
