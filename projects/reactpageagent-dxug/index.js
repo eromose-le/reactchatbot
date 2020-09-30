@@ -14,16 +14,16 @@ module.exports = (request, response) => {
 
  function rhymingWordHandler(agent) {
   const word = agent.parameters.word;
-  // agent.add(`Here are the rhyming words for ${word}`);
-  axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`)
+  agent.add(`Here are the rhyming words for ${word}`);
+  return axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`)
    .then((result) => {
     console.log(result.data);
     result.data.map(wordObj => {
      console.log(wordObj.word);
-     //    agent.add(wordObj.word);
+     agent.add(wordObj.word);
     });
    });
-  agent.add('intent called: ' + word);
+  // agent.add('intent called: ' + word);
  }
 
  let intentMap = new Map();
