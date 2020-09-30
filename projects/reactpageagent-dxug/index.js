@@ -13,15 +13,19 @@ module.exports = (request, response) => {
   agent.add('Welcome to my agent');
  }
 
- function rhymingWordHandler(agent) {
-  const word = agent.parameters.word;
-  agent.add(`Here are the rhyming words for ${word}`);
-  return axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`)
-   .then((result) => {
-    result.data.map(wordObj => {
-     agent.add(wordObj.word);
+ async function rhymingWordHandler(agent) {
+  try {
+   const word = agent.parameters.word;
+   agent.add(`Here are the rhyming words for ${word}`);
+   return axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`)
+    .then((result) => {
+     result.data.map(wordObj => {
+      agent.add(wordObj.word);
+     });
     });
-   });
+  } catch (error) {
+   console.log(error);
+  }
  }
 
  let intentMap = new Map();
