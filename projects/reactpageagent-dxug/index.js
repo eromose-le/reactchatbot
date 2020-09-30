@@ -14,18 +14,16 @@ module.exports = (request, response) => {
  }
 
  async function rhymingWordHandler(agent) {
-  try {
-   const word = agent.parameters.word;
-   agent.add(`Here are the rhyming words for ${word}`);
-   return axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`)
-    .then((result) => {
-     result.data.map(wordObj => {
-      agent.add(wordObj.word);
-     });
+  const word = agent.parameters.word;
+  agent.add(`Here are the rhyming words for ${word}`);
+  return axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`)
+   .then((result) => {
+    result.data.map(wordObj => {
+     agent.add(wordObj.word);
     });
-  } catch (error) {
-   console.log(error);
-  }
+   }).catch(err => {
+    console.log(error);
+   })
  }
 
  let intentMap = new Map();
