@@ -26,7 +26,7 @@ module.exports = (request, response) => {
   //     });
   // }
 
-  function rhymingWordHandler(agent) {
+  async function rhymingWordHandler(agent) {
     const word = agent.parameters.word;
     agent.add(`Here are the rhyming words for ${word}`);
     axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`)
@@ -38,12 +38,13 @@ module.exports = (request, response) => {
           // agent.end(`${wordObj.word}`);
         });
       });
-
-    let intentMap = new Map();
-    intentMap.set('Default Welcome Intent', welcome);
-    intentMap.set('rhymingWord', rhymingWordHandler);
-    agent.handleRequest(intentMap);
   }
+
+  let intentMap = new Map();
+  intentMap.set('Default Welcome Intent', welcome);
+  intentMap.set('rhymingWord', rhymingWordHandler);
+  agent.handleRequest(intentMap);
+}
 //  .catch (err) {
 //  next(err);
 // };
