@@ -34,7 +34,8 @@ module.exports = (request, response) => {
         console.log(result.data);
         result.data.map(wordObj => {
           console.log(wordObj.word);
-          return agent.add(JSON.stringify(wordObj.word));
+          agent.add(JSON.stringify(wordObj.word));
+          return rhymingWordHandler(agent);
           // agent.end(`${wordObj.word}`);
         });
       });
