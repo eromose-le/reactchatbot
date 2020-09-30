@@ -12,7 +12,8 @@ module.exports = (request, response) => {
  }
 
  function rhymingWordHandler(agent) {
-  agent.add('intent called');
+  const word = agent.parameters.word;
+  agent.add('intent called: ' + word);
  }
 
  let intentMap = new Map();
