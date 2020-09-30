@@ -34,7 +34,8 @@ module.exports = (request, response) => {
         console.log(result.data);
         result.data.map(wordObj => {
           console.log(wordObj.word);
-          agent.add(JSON.stringify(wordObj.word));
+          agent.add(`after AXIOS call`);
+          // agent.add(JSON.stringify(wordObj.word));
           return;
           // agent.end(`${wordObj.word}`);
         });
