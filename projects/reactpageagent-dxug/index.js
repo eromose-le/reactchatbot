@@ -26,7 +26,7 @@ module.exports = (request, response) => {
   //     });
   // }
 
-  async function rhymingWordHandler(agent) {
+  function rhymingWordHandler(agent) {
     const word = agent.parameters.word;
     agent.add(`Here are the rhyming words for ${word}`);
     axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`)
