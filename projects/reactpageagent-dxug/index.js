@@ -31,7 +31,6 @@ module.exports = (request, response) => {
   // }
 
   function rhymingWordHandler(agent) {
-
     return new Promise((resolve, reject) => {
       // get parameters given by user in Dialogflow
       const param1 = agent.parameters.word;
@@ -59,32 +58,13 @@ module.exports = (request, response) => {
       // All handling of returned JSON data goes under .then and before .catch
       rpn(options)
         .then((json) => {
-
           var result = result.data.map(wordObj => {
-            // the answer passed to Dialogflow goes here 
-
-            // Make a string out of the returned JSON object
             var myStringData = JSON.stringify(json);
-            console.log(`This data was returned: ${myStringData}`); // testing
-
-            // Make an array out of the stringified JSON
             var myArray = JSON.parse(myStringData);
-            console.log(`This is my array: ${myArray}`); // testing
-
-            // Code for parsing myArray goes here, for example:
-
-            if (condition) {
-              // For example, the returned JSON does not contain the data the user wants
-              result = agent.add('Sorry, could not find any results.');
-              resolve(result); // Promise resolved
-            }
-            else {
-              // If the desired data is found:
-              var output = wordObj.word; // put the data here
-              result = agent.add(`Here are the results of your search: ${output}`);
-              resolve(result); // Promise resolved
-            }
-            return;
+            // If the desired data is found:
+            var output = myStringData.word; // put the data here
+            result = agent.add(`Here are the results of your search: ${output}`);
+            resolve(result); // Promise resolved
           });
         }) // .then end
         .catch(() => { // if .then fails
