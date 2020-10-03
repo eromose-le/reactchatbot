@@ -4,7 +4,7 @@ const functions = require('firebase-functions');
 
 var admin = require("firebase-admin");
 
-var serviceAccount = require("../../../reactpageagent-dxug-firebase-adminsdk-26f6q-e1563ff30f.json");
+var serviceAccount = require("../../reactpageagent-dxug-firebase-adminsdk-26f6q-e1563ff30f.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
