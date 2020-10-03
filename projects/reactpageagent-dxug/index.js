@@ -23,7 +23,7 @@ module.exports = (request, response) => {
         console.log(result.data);
         result.data.map(wordObj => {
           console.log(wordObj.word);
-          agent.add(JSON.stringify(wordObj.word));
+          agent.add(`The Word are: ${wordObj.word}`);
         });
       }).catch(error => {
         // do something
