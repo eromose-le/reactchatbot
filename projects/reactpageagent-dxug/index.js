@@ -27,10 +27,6 @@ module.exports = (request, response) => {
           // agent.end(`${wordObj.word}`);
         });
       });
-  }
-
-  function callApi(url) {
-    return axios.get(url);
   };
 
   let intentMap = new Map();
