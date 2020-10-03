@@ -1,9 +1,6 @@
 'use strict';
 const functions = require('firebase-functions');
 
-const rpn = require('request-promise-native');
-const hostAPI = 'https://api.datamuse.com/';
-
 const { WebhookClient } = require('dialogflow-fulfillment');
 const { Card, Suggestion } = require('dialogflow-fulfillment');
 const axios = require('axios');
@@ -17,103 +14,46 @@ module.exports = (request, response) => {
     agent.add('Welcome to my agent');
   }
 
-  // function rhymingWordHandler(agent) {
-  //   const word = agent.parameters.word;
-  //   agent.add(`Here are the rhyming words for ${word}`);
-  //   axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`)
-  //     .then((result) => {
-  //       result.data.map(wordObj => {
-  //         agent.add(wordObj.word)
-  //       });
-  //     }).catch(err => {
-  //       console.log(err);
-  //     });
-  // }
-
   function rhymingWordHandler(agent) {
-    return new Promise((resolve, reject) => {
-      // get parameters given by user in Dialogflow
-      const param1 = agent.parameters.word;
-      // and so on...
+    const word = agent.parameters.word;
+    agent.add(`Here are the rhyming words for ${word}`)
 
-      console.log(`Parameters from Dialogflow: ${param1}`); // testing
+    return callApi(`https://api.datamuse.com/words?rel_rhy=${word}`)
+      .then((result) => {
+        console.log(result.data);
+        result.data.map(wordObj => {
+          console.log(wordObj.word);
+          agent.add(JSON.stringify(wordObj.word));
+        });
+      }).catch(error => {
+        // do something
+        console.log(error);
+      })
+  };
 
-      // If necessary, format the parameters passed by Dialogflow to fit the API query string.
-      // Then construct the URL used to query the API.
-
-      var myUrl = `${hostAPI}words?rel_rhy=${param1}`;
-      console.log('The URL is ' + myUrl); // testing
-
-      // Make the HTTP request with request-promise-native
-      // https://www.npmjs.com/package/request-promise
-
-      var options = {
-        uri: myUrl,
-        headers: {
-          'User-Agent': 'Request-Promise-Native'
-        },
-        json: true
-      };
-
-      // All handling of returned JSON data goes under .then and before .catch
-      rpn(options)
-        .then((json) => {
-          var result = result.data.map(wordObj => {
-            var myStringData = JSON.stringify(json);
-            var myArray = JSON.parse(myStringData);
-            // If the desired data is found:
-            var output = myStringData.word; // put the data here
-            result = agent.add(`Here are the results of your search: ${output}`);
-            resolve(result); // Promise resolved
-          });
-        }) // .then end
-        .catch(() => { // if .then fails
-          console.log('Promise rejected');
-          let rejectMessage = agent.add('Sorry, an error occurred.');
-          reject(rejectMessage); // Promise rejected
-        });	// .catch end
-    }); // Promise end
-
-
-
-    // const word = agent.parameters.word;
-    // agent.add(`Here are the rhyming words for ${word}`)
-    // axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`)
-    //   .then((result) => {
-    //     console.log(result.data);
-    //     result.data.map(wordObj => {
-    //       console.log(wordObj.word);
-    //       agent.add(JSON.stringify(wordObj.word));
-    //       // agent.add(JSON.stringify(wordObj.word));
-    //       return;
-    //       // agent.end(`${wordObj.word}`);
-    //     });
-    //   });
-
-
-  }
+  function callApi(url) {
+    return axios.get(url);
+  };
 
   let intentMap = new Map();
   intentMap.set('Default Welcome Intent', welcome);
   intentMap.set('rhymingWord', rhymingWordHandler);
   agent.handleRequest(intentMap);
 }
-//  .catch (err) {
-//  next(err);
-// };
 
 
 
 // function rhymingWordHandler(agent) {
-//  const word = agent.parameters.word;
-//  agent.add(`Here are the rhyming words for ${word}`);
-//  return axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`)
-//   .then((result) => {
-//    console.log(result.data);
-//    result.data.map(wordObj => {
-//     console.log(wordObj.word);
-//     agent.add(wordObj.word);
-//    });
-//   });
-//  // agent.add('intent called: ' + word);
+//   const word = agent.parameters.word;
+//   agent.add(`Here are the rhyming words for ${word}`)
+//   axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`)
+//     .then((result) => {
+//       console.log(result.data);
+//       result.data.map(wordObj => {
+//         console.log(wordObj.word);
+//         agent.add(JSON.stringify(wordObj.word));
+//         return;
+//         // agent.end(`${wordObj.word}`);
+//       });
+//     });
 // }
