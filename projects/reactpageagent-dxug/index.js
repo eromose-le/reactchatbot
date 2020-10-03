@@ -17,19 +17,17 @@ module.exports = (request, response) => {
   function rhymingWordHandler(agent) {
     const word = agent.parameters.word;
     agent.add(`Here are the rhyming words for ${word}`)
-
-    return callApi(`https://api.datamuse.com/words?rel_rhy=${word}`)
+    axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`)
       .then((result) => {
         console.log(result.data);
         result.data.map(wordObj => {
           console.log(wordObj.word);
-          agent.add(`The Word are: ${wordObj.word}`);
+          agent.add(JSON.stringify(wordObj.word));
+          return;
+          // agent.end(`${wordObj.word}`);
         });
-      }).catch(error => {
-        // do something
-        console.log(error);
-      })
-  };
+      });
+  }
 
   function callApi(url) {
     return axios.get(url);
@@ -43,17 +41,3 @@ module.exports = (request, response) => {
 
 
 
-// function rhymingWordHandler(agent) {
-//   const word = agent.parameters.word;
-//   agent.add(`Here are the rhyming words for ${word}`)
-//   axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`)
-//     .then((result) => {
-//       console.log(result.data);
-//       result.data.map(wordObj => {
-//         console.log(wordObj.word);
-//         agent.add(JSON.stringify(wordObj.word));
-//         return;
-//         // agent.end(`${wordObj.word}`);
-//       });
-//     });
-// }
