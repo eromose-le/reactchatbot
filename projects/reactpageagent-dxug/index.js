@@ -28,7 +28,7 @@ module.exports = (request, response) => {
         result.data.map(wordObj => {
           var temp = wordObj.word;
           console.log(temp);
-          agent.add(`Api words: ${temp}`);
+          return agent.add(`Api words: ${temp}`);
         });
       });
   };
