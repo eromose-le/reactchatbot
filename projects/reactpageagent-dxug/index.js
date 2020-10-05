@@ -1,4 +1,5 @@
 'use strict';
+const { Firestore } = require('@google-cloud/firestore');
 const functions = require('firebase-functions');
 var admin = require("firebase-admin");
 var serviceAccount = require("../../reactpageagent-dxug-firebase-adminsdk-26f6q-e1563ff30f.json");
@@ -7,6 +8,14 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://reactpageagent-dxug.firebaseio.com"
 });
+
+process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging 
+statements
+const firestore = new Firestore();
+const settings = {/* your settings... */
+  timestampsInSnapshots: true
+};
+firestore.settings(settings);
 
 const { WebhookClient } = require('dialogflow-fulfillment');
 const { Card, Suggestion } = require('dialogflow-fulfillment');
@@ -21,13 +30,13 @@ module.exports = (request, response) => {
 
   function rhymingWordHandler(agent) {
     const word = agent.parameters.word;
-    agent.add(`Here are the rhyming words for ${word}`)
-    return axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`)
+    agent.add(`Here are the rhyming words for ${word}`);
+    axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`)
       .then((result) => {
         console.log(result.data);
-        result.data.map(wordObj => {
+        return result.data.map(wordObj => {
           console.log(wordObj.word);
-          return agent.add(`Api words: ${wordObj.word}`);
+          agent.add(`Api words: ${wordObj.word}`);
           // agent.end(`${wordObj.word}`);
         });
       });
