@@ -21,7 +21,7 @@ module.exports = (request, response) => {
   }
 
   function rhymingWordHandler(agent) {
-    return getWordData().then(res => {
+    getWordData().then(res => {
       res.data.map(wordObj => {
         console.log(wordObj.word)
         agent.add(`Api words: ${wordObj.word}`);
