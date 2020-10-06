@@ -19,19 +19,25 @@ module.exports = (request, response) => {
     agent.add('Welcome to my agent');
   }
 
+  function getWordData() {
+    const word = agent.parameters.word;
+    return axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`);
+  }
+
   function rhymingWordHandler(agent) {
     const word = agent.parameters.word;
     agent.add(`Here are the rhyming words for ${word}`);
-    axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`)
-      .then((result) => {
+    return getWordData()
+      .then((res) => {
         console.log(result.data)
-        result.data.map(wordObj => {
+        res.data.map(wordObj => {
           console.log(wordObj.word)
-          return agent.add(`Api words: ${wordObj.word}`);
+          if (wordObj.word === word)
+            agent.add(`Api words: ${word}`);
           // agent.end(`${wordObj.word}`);
         });
       });
-  };
+  }
 
   let intentMap = new Map();
   intentMap.set('Default Welcome Intent', welcome);
