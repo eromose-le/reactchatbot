@@ -32,7 +32,7 @@ module.exports = (request, response) => {
         console.log(result.data)
         res.data.map(wordObj => {
           console.log(wordObj.word)
-          agent.add(`Api words: ${word}`);
+          agent.add(`Api words: ${wordObj.word}`);
           // agent.end(`${wordObj.word}`);
         });
       });
