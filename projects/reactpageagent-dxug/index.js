@@ -24,7 +24,7 @@ module.exports = (request, response) => {
     getWordData().then(res => {
       res.data.map(wordObj => {
         console.log(wordObj.word)
-        agent.add(`Api words: ${wordObj.word}`);
+        return agent.add(`Api words: ${wordObj.word}`);
       });
     });
   }
