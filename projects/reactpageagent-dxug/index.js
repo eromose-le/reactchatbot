@@ -32,8 +32,7 @@ module.exports = (request, response) => {
         console.log(result.data)
         res.data.map(wordObj => {
           console.log(wordObj.word)
-          if (wordObj.word[0] === word)
-            agent.add(`Api words: ${word}`);
+          agent.add(`Api words: ${word}`);
           // agent.end(`${wordObj.word}`);
         });
       });
