@@ -21,13 +21,12 @@ module.exports = (request, response) => {
   }
 
   function rhymingWordHandler(agent) {
-    getWordData().then(res => {
-      console.log(wordObj)
-      res.data.map(wordObj => {
-        let result = wordObj.word;
-        return agent.add(`Api words: ${result}`);
-        console.log(result)
-      });
+    getWordData().then(result => {
+      console.log(result.data)
+      result.data.map(wordObj => {
+        console.log(wordObj.word)
+        return agent.add(`Api words: ${wordObj.word}.`)
+      }).join(" & ");
     });
   }
 
