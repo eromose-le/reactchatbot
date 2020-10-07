@@ -23,7 +23,7 @@ module.exports = (request, response) => {
         console.log(result.data);
         result.data.map(wordObj => {
           console.log(wordObj.word);
-          return agent.add(JSON.stringify(wordObj.word)).join(" & ");
+          return agent.add(JSON.stringify(wordObj.word)).join(" \n ");
           // agent.end(`${wordObj.word}`);
         });
       });
