@@ -25,7 +25,7 @@ module.exports = (request, response) => {
       console.log(result.data)
       result.data.map(wordObj => {
         console.log(wordObj.word)
-        return agent.add(`Api words: ${wordObj.word}.`)
+        return agent.add(JSON.parse(JSON.stringify(wordObj.word)))
       }).join(" & ");
     });
   }
