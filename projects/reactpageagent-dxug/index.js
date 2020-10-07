@@ -22,9 +22,11 @@ module.exports = (request, response) => {
 
   function rhymingWordHandler(agent) {
     getWordData().then(res => {
+      console.log(wordObj)
       res.data.map(wordObj => {
-        console.log(wordObj.word)
-        return agent.add(`Api words: ${wordObj.word}`);
+        let result = wordObj.word;
+        return agent.add(`Api words: ${result}`);
+        console.log(result)
       });
     });
   }
