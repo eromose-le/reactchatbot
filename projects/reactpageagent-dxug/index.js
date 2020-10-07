@@ -15,13 +15,9 @@ const axios = require('axios');
 module.exports = (request, response) => {
   const agent = new WebhookClient({ request, response });
 
-  function getWordData() {
-    const word = agent.parameters.word;
-    return axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`);
-  }
-
   function rhymingWordHandler(agent) {
-    getWordData().then(result => {
+    const word = agent.parameters.word;
+    axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`).then(result => {
       console.log(result.data)
       result.data.map(wordObj => {
         console.log(wordObj.word)
