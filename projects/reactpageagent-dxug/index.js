@@ -15,17 +15,36 @@ const axios = require('axios');
 module.exports = (request, response) => {
   const agent = new WebhookClient({ request, response });
 
-  function rhymingWordHandler(agent) {
+  function rhymData(result) {
+    let count = 0;
+    let str = "";
+    return new Promise(resolve => {
+      result.data.map(wordObj => {
+        console.log(wordObj.word);
+        str = str + `${wordObj.word}, `;
+        console.log(count === result.data.length - 1);
+        if (count === result.data.length - 1) {
+          resolve(str);
+        }
+        count++;
+        // agent.end(`${wordObj.word}`);
+      });
+    });
+    // });
+  }
+
+  function rhymHandler(agent) {
     const word = agent.parameters.word;
-    agent.add(`Here are the rhyming words for ${word}`);
-    axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`)
+    return axios.get(`https://api.datamuse.com/words?rel_rhy=${word}`)
       .then((result) => {
-        console.log(result.data);
-        result.data.map(wordObj => {
-          console.log(wordObj.word);
-          return agent.add(JSON.stringify(wordObj.word)).join();
-          // agent.end(`${wordObj.word}`);
+        return rhymData(result).then(res => {
+          agent.add(`Here are the rhyming words for ${word}`);
+          agent.add(res);
+          console.log("res", res);
         });
+      }).catch(err => {
+        console.log(err);
+        agent.add("Something went wrong");
       });
   }
 
