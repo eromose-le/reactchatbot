@@ -49,7 +49,7 @@ module.exports = (request, response) => {
   }
 
   let intentMap = new Map();
-  intentMap.set('rhymingWord', rhymingWordHandler);
+  intentMap.set('rhymingWord', rhymHandler);
   agent.handleRequest(intentMap);
 }
 
